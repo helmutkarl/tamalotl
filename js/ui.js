@@ -4,6 +4,9 @@
 
   function createUI() {
     var activeEffectTimeoutId = 0;
+    var ambientDanceTimeoutId = 0;
+    var activeEffectName = "";
+    var lastRenderedStatus = "happy";
     var elements = {
       body: document.body,
       tank: document.querySelector("[data-tank]"),
@@ -19,6 +22,57 @@
       meterFills: collectElements("[data-meter-fill]"),
     };
 
+    function scheduleAmbientDance() {
+      var minDelay = CONFIG.idleDance.minDelayMs || 7000;
+      var maxDelay = CONFIG.idleDance.maxDelayMs || 14000;
+
+      cancelAmbientDance();
+
+      ambientDanceTimeoutId = window.setTimeout(function () {
+        ambientDanceTimeoutId = 0;
+
+        if (document.hidden || activeEffectName || lastRenderedStatus === "sleepy") {
+          scheduleAmbientDance();
+          return;
+        }
+
+        startEffect("dance", CONFIG.effectDurations.dance || 1700, false);
+      }, randomBetween(minDelay, maxDelay));
+    }
+
+    function startEffect(effectName, duration, isAction) {
+      clearActionEffect(elements, activeEffectTimeoutId);
+      activeEffectName = effectName;
+      void elements.tank.offsetWidth;
+
+      elements.tank.dataset.effect = effectName;
+      elements.pet.dataset.effect = effectName;
+
+      if (effectName === "sleep") {
+        elements.body.dataset.sceneEffect = "sleep";
+      }
+
+      if (isAction) {
+        activeActionButton(elements.buttons, effectName);
+      } else {
+        clearActionButtons(elements.buttons);
+      }
+
+      activeEffectTimeoutId = window.setTimeout(function () {
+        clearActionEffect(elements);
+        activeEffectTimeoutId = 0;
+        activeEffectName = "";
+        scheduleAmbientDance();
+      }, duration);
+    }
+
+    function cancelAmbientDance() {
+      if (ambientDanceTimeoutId) {
+        window.clearTimeout(ambientDanceTimeoutId);
+        ambientDanceTimeoutId = 0;
+      }
+    }
+
     return {
       bindActions: function (onAction) {
         elements.buttons.forEach(function (button) {
@@ -28,28 +82,19 @@
         });
       },
 
+      startAmbientMotion: function () {
+        scheduleAmbientDance();
+      },
+
       playActionEffect: function (actionName) {
         var duration = CONFIG.effectDurations[actionName] || 2200;
 
-        clearActionEffect(elements, activeEffectTimeoutId);
-        void elements.tank.offsetWidth;
-
-        elements.tank.dataset.effect = actionName;
-        elements.pet.dataset.effect = actionName;
-
-        if (actionName === "sleep") {
-          elements.body.dataset.sceneEffect = "sleep";
-        }
-
-        activeActionButton(elements.buttons, actionName);
-
-        activeEffectTimeoutId = window.setTimeout(function () {
-          clearActionEffect(elements);
-          activeEffectTimeoutId = 0;
-        }, duration);
+        cancelAmbientDance();
+        startEffect(actionName, duration, true);
       },
 
       render: function (state) {
+        lastRenderedStatus = state.status;
         elements.pet.dataset.state = state.status;
         elements.message.textContent = state.message;
         elements.statusLabel.textContent = CONFIG.statusLabels[state.status];
@@ -117,6 +162,12 @@
     });
   }
 
+  function clearActionButtons(buttons) {
+    buttons.forEach(function (button) {
+      delete button.dataset.active;
+    });
+  }
+
   function clearActionEffect(elements, timeoutId) {
     if (timeoutId) {
       window.clearTimeout(timeoutId);
@@ -126,9 +177,11 @@
     delete elements.pet.dataset.effect;
     delete elements.body.dataset.sceneEffect;
 
-    elements.buttons.forEach(function (button) {
-      delete button.dataset.active;
-    });
+    clearActionButtons(elements.buttons);
+  }
+
+  function randomBetween(min, max) {
+    return Math.round(min + Math.random() * (max - min));
   }
 
   Tamalotl.UI = {

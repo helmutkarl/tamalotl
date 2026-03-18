@@ -41,6 +41,7 @@
     });
 
     renderAndSave();
+    ui.startAmbientMotion();
     window.setInterval(refreshFromTime, CONFIG.tickMs);
   });
 })();

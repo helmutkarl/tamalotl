@@ -28,6 +28,12 @@
       play: 2400,
       sleep: 4200,
       clean: 2600,
+      dance: 1700,
+    },
+
+    idleDance: {
+      minDelayMs: 7000,
+      maxDelayMs: 14000,
     },
 
     actionEffects: {
@@ -91,7 +97,7 @@
     },
 
     actionMessages: {
-      feed: "Nom nom... tiny tummy is much happier now.",
+      feed: "Nom nom... that little worm was perfect.",
       play: "Splash splash. That was very fun.",
       sleep: "Just a soft floaty nap...",
       clean: "Fresh water wiggle. Much better.",
