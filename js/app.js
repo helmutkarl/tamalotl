@@ -22,6 +22,7 @@
     }
 
     ui.bindActions(function (actionName) {
+      ui.playActionEffect(actionName);
       state = Game.applyAction(state, actionName, Date.now());
       renderAndSave();
     });

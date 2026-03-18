@@ -3,7 +3,10 @@
   var CONFIG = Tamalotl.CONFIG;
 
   function createUI() {
+    var activeEffectTimeoutId = 0;
     var elements = {
+      body: document.body,
+      tank: document.querySelector("[data-tank]"),
       pet: document.querySelector("[data-pet]"),
       message: document.querySelector("[data-message]"),
       statusLabel: document.querySelector("[data-status-label]"),
@@ -23,6 +26,27 @@
             onAction(button.dataset.action);
           });
         });
+      },
+
+      playActionEffect: function (actionName) {
+        var duration = CONFIG.effectDurations[actionName] || 2200;
+
+        clearActionEffect(elements, activeEffectTimeoutId);
+        void elements.tank.offsetWidth;
+
+        elements.tank.dataset.effect = actionName;
+        elements.pet.dataset.effect = actionName;
+
+        if (actionName === "sleep") {
+          elements.body.dataset.sceneEffect = "sleep";
+        }
+
+        activeActionButton(elements.buttons, actionName);
+
+        activeEffectTimeoutId = window.setTimeout(function () {
+          clearActionEffect(elements);
+          activeEffectTimeoutId = 0;
+        }, duration);
       },
 
       render: function (state) {
@@ -81,6 +105,30 @@
     }
 
     return "high";
+  }
+
+  function activeActionButton(buttons, actionName) {
+    buttons.forEach(function (button) {
+      if (button.dataset.action === actionName) {
+        button.dataset.active = "true";
+      } else {
+        delete button.dataset.active;
+      }
+    });
+  }
+
+  function clearActionEffect(elements, timeoutId) {
+    if (timeoutId) {
+      window.clearTimeout(timeoutId);
+    }
+
+    delete elements.tank.dataset.effect;
+    delete elements.pet.dataset.effect;
+    delete elements.body.dataset.sceneEffect;
+
+    elements.buttons.forEach(function (button) {
+      delete button.dataset.active;
+    });
   }
 
   Tamalotl.UI = {

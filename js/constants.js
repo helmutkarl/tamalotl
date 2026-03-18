@@ -23,6 +23,13 @@
       cleanliness: 1.3,
     },
 
+    effectDurations: {
+      feed: 2200,
+      play: 2400,
+      sleep: 4200,
+      clean: 2600,
+    },
+
     actionEffects: {
       feed: {
         hunger: 24,

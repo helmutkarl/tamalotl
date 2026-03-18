@@ -50,6 +50,7 @@ Then open `http://localhost:8000`.
 - Tamalotl has four values: Hunger, Happiness, Energy, and Cleanliness.
 - Values slowly drift down over time.
 - The `Feed`, `Play`, `Sleep`, and `Clean` buttons adjust those values.
+- Each action also triggers a small visual animation in the tank.
 - Tamalotl reacts with simple states: `happy`, `hungry`, `sleepy`, and `dirty`.
 - Reloading the page keeps the current state in the same browser.
 

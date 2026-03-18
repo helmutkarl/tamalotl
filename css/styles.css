@@ -21,6 +21,7 @@ html {
 }
 
 body {
+  position: relative;
   margin: 0;
   min-height: 100svh;
   font-family: "Avenir Next", "Trebuchet MS", "Gill Sans", sans-serif;
@@ -31,6 +32,23 @@ body {
     linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(232, 241, 255, 0.22), transparent 30%),
+    linear-gradient(180deg, rgba(22, 39, 81, 0.12), rgba(8, 14, 38, 0.7));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 360ms ease;
+}
+
+body[data-scene-effect="sleep"]::before {
+  opacity: 1;
 }
 
 button,
@@ -41,6 +59,8 @@ select {
 }
 
 .page-shell {
+  position: relative;
+  z-index: 1;
   min-height: 100svh;
   display: flex;
   align-items: center;
@@ -60,6 +80,13 @@ select {
   box-shadow: var(--shadow);
   padding: 22px 18px 18px;
   backdrop-filter: blur(10px);
+  transition: box-shadow 360ms ease, background 360ms ease, transform 360ms ease;
+}
+
+body[data-scene-effect="sleep"] .app-card {
+  background: linear-gradient(180deg, rgba(247, 251, 255, 0.72), rgba(239, 244, 255, 0.84));
+  box-shadow: 0 24px 54px rgba(9, 19, 53, 0.28);
+  transform: translateY(-2px);
 }
 
 .hero {
@@ -96,6 +123,12 @@ select {
   border-radius: var(--radius-xl);
   padding: 16px;
   border: 1px solid var(--line);
+  transition: background 360ms ease, border-color 360ms ease;
+}
+
+body[data-scene-effect="sleep"] .pet-panel {
+  background: linear-gradient(180deg, rgba(249, 251, 255, 0.95), rgba(227, 236, 255, 0.92));
+  border-color: rgba(104, 126, 181, 0.18);
 }
 
 .panel-top {
@@ -163,11 +196,20 @@ select {
 .tank {
   position: relative;
   overflow: hidden;
+  isolation: isolate;
   min-height: 240px;
   border-radius: 26px;
   background:
     radial-gradient(circle at top, rgba(255, 255, 255, 0.65), transparent 40%),
     linear-gradient(180deg, rgba(223, 249, 255, 0.95), rgba(186, 237, 246, 0.9));
+  transition: background 360ms ease, box-shadow 360ms ease, filter 360ms ease;
+}
+
+body[data-scene-effect="sleep"] .tank {
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 44%),
+    linear-gradient(180deg, rgba(72, 103, 161, 0.95), rgba(37, 61, 104, 0.98));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 .tank::after {
@@ -178,6 +220,276 @@ select {
   background:
     radial-gradient(circle at 12% 40%, rgba(255, 255, 255, 0.55), transparent 24%),
     linear-gradient(180deg, rgba(181, 228, 190, 0.5), rgba(124, 194, 151, 0.6));
+}
+
+.scene-fx,
+.night-fx,
+.feed-fx,
+.play-fx,
+.clean-fx,
+.sleep-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.scene-fx {
+  z-index: 3;
+}
+
+.night-fx,
+.feed-fx,
+.play-fx,
+.clean-fx,
+.sleep-fx {
+  opacity: 0;
+}
+
+.night-fx {
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.09), transparent 16%),
+    linear-gradient(180deg, rgba(20, 35, 73, 0.05), rgba(12, 20, 53, 0.42));
+  transition: opacity 300ms ease;
+}
+
+.moon {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 35%, #fffef3, #ffe7a3 78%);
+  box-shadow: 0 0 22px rgba(255, 238, 169, 0.32);
+}
+
+.moon::after {
+  content: "";
+  position: absolute;
+  inset: 3px 0 0 10px;
+  border-radius: 999px;
+  background: rgba(83, 113, 171, 0.92);
+}
+
+.star {
+  position: absolute;
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.75);
+}
+
+.star--1 {
+  top: 32px;
+  left: 52px;
+}
+
+.star--2 {
+  top: 62px;
+  left: 112px;
+}
+
+.star--3 {
+  top: 46px;
+  right: 92px;
+}
+
+.star--4 {
+  top: 86px;
+  right: 58px;
+}
+
+.food-pellet {
+  position: absolute;
+  top: 14px;
+  width: 12px;
+  height: 14px;
+  border-radius: 45% 45% 55% 55%;
+  background: linear-gradient(180deg, #f9be7d, #d68553);
+  box-shadow: inset 0 -2px 0 rgba(138, 78, 40, 0.22);
+  opacity: 0;
+}
+
+.food-pellet--1 {
+  left: 68%;
+}
+
+.food-pellet--2 {
+  left: 76%;
+}
+
+.food-pellet--3 {
+  left: 84%;
+}
+
+.play-heart,
+.play-ring,
+.soap-bubble,
+.sparkle,
+.zzz {
+  position: absolute;
+  display: block;
+  opacity: 0;
+}
+
+.play-heart {
+  width: 18px;
+  height: 18px;
+  background: #ff93b8;
+  transform: rotate(45deg);
+}
+
+.play-heart::before,
+.play-heart::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: inherit;
+}
+
+.play-heart::before {
+  left: -9px;
+}
+
+.play-heart::after {
+  top: -9px;
+}
+
+.play-heart--1 {
+  left: 112px;
+  bottom: 112px;
+}
+
+.play-heart--2 {
+  left: 172px;
+  bottom: 128px;
+}
+
+.play-heart--3 {
+  left: 204px;
+  bottom: 106px;
+}
+
+.play-ring {
+  border-radius: 999px;
+  border: 3px solid rgba(255, 255, 255, 0.76);
+}
+
+.play-ring--1 {
+  left: 112px;
+  bottom: 92px;
+  width: 42px;
+  height: 42px;
+}
+
+.play-ring--2 {
+  right: 104px;
+  bottom: 100px;
+  width: 30px;
+  height: 30px;
+}
+
+.soap-bubble {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.32);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.3),
+    0 0 16px rgba(255, 255, 255, 0.22);
+}
+
+.soap-bubble--1 {
+  left: 102px;
+  bottom: 70px;
+  width: 18px;
+  height: 18px;
+}
+
+.soap-bubble--2 {
+  left: 192px;
+  bottom: 74px;
+  width: 24px;
+  height: 24px;
+}
+
+.soap-bubble--3 {
+  left: 154px;
+  bottom: 116px;
+  width: 12px;
+  height: 12px;
+}
+
+.sparkle {
+  width: 18px;
+  height: 18px;
+}
+
+.sparkle::before,
+.sparkle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0));
+}
+
+.sparkle::before {
+  width: 4px;
+  height: 18px;
+}
+
+.sparkle::after {
+  width: 18px;
+  height: 4px;
+}
+
+.sparkle--1 {
+  left: 98px;
+  bottom: 134px;
+}
+
+.sparkle--2 {
+  left: 208px;
+  bottom: 140px;
+}
+
+.sparkle--3 {
+  left: 168px;
+  bottom: 92px;
+}
+
+.zzz {
+  color: #fff3c6;
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-shadow: 0 0 12px rgba(255, 243, 198, 0.34);
+}
+
+.zzz--1 {
+  right: 110px;
+  top: 84px;
+}
+
+.zzz--2 {
+  right: 88px;
+  top: 58px;
+}
+
+.zzz--3 {
+  right: 62px;
+  top: 32px;
+}
+
+.tank[data-effect="sleep"] .night-fx,
+.tank[data-effect="feed"] .feed-fx,
+.tank[data-effect="play"] .play-fx,
+.tank[data-effect="clean"] .clean-fx,
+.tank[data-effect="sleep"] .sleep-fx {
+  opacity: 1;
 }
 
 .tank-bubble {
@@ -553,6 +865,11 @@ select {
   outline-offset: 2px;
 }
 
+.action-button[data-active="true"] {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 18px 28px rgba(84, 119, 145, 0.2);
+}
+
 .action-button[data-action="feed"] {
   background: linear-gradient(180deg, #ffe0d0, #ffc4ac);
 }
@@ -637,6 +954,135 @@ select {
   background: rgba(180, 161, 173, 0.35);
 }
 
+.axolotl[data-effect="feed"] {
+  animation: pet-float 2.3s ease-in-out infinite, feed-bob 520ms ease-in-out 4;
+}
+
+.axolotl[data-effect="feed"] .axolotl__head {
+  animation: head-nod 520ms ease-in-out 4;
+}
+
+.axolotl[data-effect="feed"] .axolotl__mouth {
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  border-bottom: 3px solid #325066;
+  background: transparent;
+  animation: nibble 220ms linear 8;
+}
+
+.axolotl[data-effect="play"] {
+  animation: pet-float 1.8s ease-in-out infinite, play-bounce 680ms ease-in-out 3;
+}
+
+.axolotl[data-effect="play"] .axolotl__tail {
+  animation: tail-wiggle 420ms ease-in-out 6;
+}
+
+.axolotl[data-effect="play"] .axolotl__blush {
+  background: rgba(255, 124, 172, 0.6);
+}
+
+.axolotl[data-effect="clean"] {
+  animation: pet-float 2.4s ease-in-out infinite, clean-sway 720ms ease-in-out 3;
+}
+
+.axolotl[data-effect="clean"] .axolotl__body,
+.axolotl[data-effect="clean"] .axolotl__head,
+.axolotl[data-effect="clean"] .axolotl__tail {
+  filter: brightness(1.04) saturate(1.02);
+}
+
+.axolotl[data-effect="sleep"] {
+  animation: pet-float 6.4s ease-in-out infinite, sleep-drift 1800ms ease-in-out 2;
+}
+
+.axolotl[data-effect="sleep"] .axolotl__eye {
+  height: 3px;
+  border-radius: 999px;
+  top: 50px;
+}
+
+.axolotl[data-effect="sleep"] .axolotl__mouth {
+  width: 12px;
+  height: 2px;
+  border: 0;
+  background: #325066;
+  top: 66px;
+}
+
+.tank[data-effect="sleep"] .star {
+  animation: twinkle 1600ms ease-in-out infinite;
+}
+
+.tank[data-effect="feed"] .food-pellet--1 {
+  animation: pellet-drop 1050ms ease-in 0ms forwards;
+}
+
+.tank[data-effect="feed"] .food-pellet--2 {
+  animation: pellet-drop 1050ms ease-in 180ms forwards;
+}
+
+.tank[data-effect="feed"] .food-pellet--3 {
+  animation: pellet-drop 1050ms ease-in 360ms forwards;
+}
+
+.tank[data-effect="play"] .play-heart--1 {
+  animation: heart-burst 1500ms ease-out 0ms forwards;
+}
+
+.tank[data-effect="play"] .play-heart--2 {
+  animation: heart-burst 1500ms ease-out 140ms forwards;
+}
+
+.tank[data-effect="play"] .play-heart--3 {
+  animation: heart-burst 1500ms ease-out 260ms forwards;
+}
+
+.tank[data-effect="play"] .play-ring--1 {
+  animation: ring-burst 1100ms ease-out 0ms forwards;
+}
+
+.tank[data-effect="play"] .play-ring--2 {
+  animation: ring-burst 1100ms ease-out 160ms forwards;
+}
+
+.tank[data-effect="clean"] .soap-bubble--1 {
+  animation: soap-rise 1400ms ease-out 0ms forwards;
+}
+
+.tank[data-effect="clean"] .soap-bubble--2 {
+  animation: soap-rise 1400ms ease-out 180ms forwards;
+}
+
+.tank[data-effect="clean"] .soap-bubble--3 {
+  animation: soap-rise 1400ms ease-out 340ms forwards;
+}
+
+.tank[data-effect="clean"] .sparkle--1 {
+  animation: sparkle-pop 900ms ease-out 0ms forwards;
+}
+
+.tank[data-effect="clean"] .sparkle--2 {
+  animation: sparkle-pop 900ms ease-out 140ms forwards;
+}
+
+.tank[data-effect="clean"] .sparkle--3 {
+  animation: sparkle-pop 900ms ease-out 260ms forwards;
+}
+
+.tank[data-effect="sleep"] .zzz--1 {
+  animation: zzz-rise 1500ms ease-in-out 0ms forwards;
+}
+
+.tank[data-effect="sleep"] .zzz--2 {
+  animation: zzz-rise 1500ms ease-in-out 260ms forwards;
+}
+
+.tank[data-effect="sleep"] .zzz--3 {
+  animation: zzz-rise 1500ms ease-in-out 520ms forwards;
+}
+
 @keyframes pet-float {
   0%,
   100% {
@@ -686,6 +1132,194 @@ select {
   }
 }
 
+@keyframes head-nod {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(4px) rotate(2deg);
+  }
+}
+
+@keyframes nibble {
+  0%,
+  100% {
+    transform: scaleX(1);
+  }
+
+  50% {
+    transform: scaleX(0.68);
+  }
+}
+
+@keyframes feed-bob {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(4px);
+  }
+}
+
+@keyframes play-bounce {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  35% {
+    transform: translateX(-50%) translateY(-12px) rotate(-3deg);
+  }
+
+  70% {
+    transform: translateX(-50%) translateY(-4px) rotate(3deg);
+  }
+}
+
+@keyframes clean-sway {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0) rotate(0deg);
+  }
+
+  30% {
+    transform: translateX(-50%) translateY(-4px) rotate(-2deg);
+  }
+
+  70% {
+    transform: translateX(-50%) translateY(-2px) rotate(2deg);
+  }
+}
+
+@keyframes sleep-drift {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(-6px) rotate(-2deg);
+  }
+}
+
+@keyframes pellet-drop {
+  0% {
+    opacity: 0;
+    transform: translate(0, -16px) scale(0.6);
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  78% {
+    opacity: 1;
+    transform: translate(-112px, 142px) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-124px, 152px) scale(0.5);
+  }
+}
+
+@keyframes heart-burst {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) rotate(45deg) scale(0.4);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-44px) rotate(45deg) scale(1.12);
+  }
+}
+
+@keyframes ring-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  20% {
+    opacity: 0.78;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
+@keyframes soap-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.7);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-78px) scale(1.15);
+  }
+}
+
+@keyframes sparkle-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.35) rotate(35deg);
+  }
+}
+
+@keyframes zzz-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.75);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-42px) translateX(8px) scale(1.08);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
 @media (max-width: 420px) {
   .app-card {
     padding: 18px 14px 16px;
@@ -714,13 +1348,26 @@ select {
 @media (prefers-reduced-motion: reduce) {
   .axolotl,
   .axolotl__tail,
+  .axolotl__head,
   .seaweed,
-  .tank-bubble {
+  .tank-bubble,
+  .star,
+  .food-pellet,
+  .play-heart,
+  .play-ring,
+  .soap-bubble,
+  .sparkle,
+  .zzz {
     animation: none;
   }
 
   .meter__fill,
-  .action-button {
+  .action-button,
+  .night-fx,
+  .app-card,
+  .pet-panel,
+  .tank,
+  body::before {
     transition: none;
   }
 }
