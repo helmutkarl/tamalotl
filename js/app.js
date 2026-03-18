@@ -27,6 +27,12 @@
       renderAndSave();
     });
 
+    ui.bindPetInteraction(function () {
+      ui.playActionEffect("pet");
+      state = Game.applyAction(state, "pet", Date.now());
+      renderAndSave();
+    });
+
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) {
         Storage.saveState(state);

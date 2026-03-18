@@ -25,6 +25,7 @@
 
     effectDurations: {
       feed: 2200,
+      pet: 1400,
       play: 2400,
       sleep: 4200,
       clean: 2600,
@@ -41,6 +42,10 @@
         hunger: 24,
         happiness: 4,
         cleanliness: -6,
+      },
+      pet: {
+        happiness: 10,
+        energy: -1,
       },
       play: {
         happiness: 18,
@@ -98,6 +103,7 @@
 
     actionMessages: {
       feed: "Nom nom... that little worm was perfect.",
+      pet: "Hehe... that made Tamalotl very happy.",
       play: "Splash splash. That was very fun.",
       sleep: "Just a soft floaty nap...",
       clean: "Fresh water wiggle. Much better.",

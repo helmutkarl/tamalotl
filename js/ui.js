@@ -82,6 +82,21 @@
         });
       },
 
+      bindPetInteraction: function (onPet) {
+        elements.pet.addEventListener("click", function () {
+          onPet();
+        });
+
+        elements.pet.addEventListener("keydown", function (event) {
+          if (event.key !== "Enter" && event.key !== " ") {
+            return;
+          }
+
+          event.preventDefault();
+          onPet();
+        });
+      },
+
       startAmbientMotion: function () {
         scheduleAmbientDance();
       },
@@ -99,6 +114,7 @@
         elements.message.textContent = state.message;
         elements.statusLabel.textContent = CONFIG.statusLabels[state.status];
         elements.statusLabel.dataset.state = state.status;
+        syncWaterState(elements.tank, state.stats.cleanliness);
 
         Object.keys(state.stats).forEach(function (statName) {
           var roundedValue = Math.round(state.stats[statName]);
@@ -150,6 +166,24 @@
     }
 
     return "high";
+  }
+
+  function syncWaterState(tankElement, cleanliness) {
+    if (!tankElement) {
+      return;
+    }
+
+    if (cleanliness <= CONFIG.thresholds.urgent) {
+      tankElement.dataset.water = "murky";
+      return;
+    }
+
+    if (cleanliness <= CONFIG.thresholds.low) {
+      tankElement.dataset.water = "cloudy";
+      return;
+    }
+
+    delete tankElement.dataset.water;
   }
 
   function activeActionButton(buttons, actionName) {

@@ -202,6 +202,36 @@ body[data-scene-effect="sleep"] .pet-panel {
   transition: background 360ms ease, box-shadow 360ms ease, filter 360ms ease;
 }
 
+.tank::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 22% 28%, rgba(255, 255, 255, 0.2), transparent 15%),
+    radial-gradient(circle at 74% 66%, rgba(171, 197, 178, 0.14), transparent 20%),
+    linear-gradient(180deg, rgba(194, 213, 205, 0.12), rgba(150, 180, 166, 0.2));
+  backdrop-filter: blur(0px) saturate(1);
+  transition: opacity 360ms ease, backdrop-filter 360ms ease, background 360ms ease;
+}
+
+.tank[data-water="cloudy"]::before {
+  opacity: 0.38;
+  backdrop-filter: blur(1.4px) saturate(0.94);
+}
+
+.tank[data-water="murky"]::before {
+  opacity: 0.62;
+  background:
+    radial-gradient(circle at 20% 24%, rgba(244, 249, 242, 0.18), transparent 16%),
+    radial-gradient(circle at 78% 64%, rgba(130, 152, 138, 0.22), transparent 24%),
+    linear-gradient(180deg, rgba(162, 186, 170, 0.3), rgba(113, 143, 128, 0.42));
+  backdrop-filter: blur(2.3px) saturate(0.86);
+}
+
 body[data-scene-effect="sleep"] .tank {
   background:
     radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 44%),
@@ -620,6 +650,15 @@ body[data-scene-effect="sleep"] .tank {
   animation: pet-float 4.6s ease-in-out infinite;
   transform-origin: center center;
   filter: drop-shadow(0 10px 14px rgba(247, 149, 185, 0.12));
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.axolotl:focus-visible {
+  outline: 3px solid rgba(53, 96, 122, 0.28);
+  outline-offset: 6px;
+  border-radius: 28px;
 }
 
 .axolotl__tail,
@@ -1073,6 +1112,28 @@ body[data-scene-effect="sleep"] .tank {
   animation: pet-float 2.3s ease-in-out infinite, feed-bob 520ms ease-in-out 4;
 }
 
+.axolotl[data-effect="pet"] {
+  animation: pet-float 2.4s ease-in-out infinite, pet-bounce 420ms ease-in-out 3;
+}
+
+.axolotl[data-effect="pet"] .axolotl__tail {
+  animation: tail-wiggle 320ms ease-in-out 4;
+}
+
+.axolotl[data-effect="pet"] .axolotl__eye {
+  height: 3px;
+  border-radius: 999px;
+  top: 51px;
+}
+
+.axolotl[data-effect="pet"] .axolotl__eye::after {
+  opacity: 0;
+}
+
+.axolotl[data-effect="pet"] .axolotl__blush {
+  background: rgba(255, 124, 172, 0.62);
+}
+
 .axolotl[data-effect="feed"] .axolotl__head {
   animation: head-nod 520ms ease-in-out 4;
 }
@@ -1157,6 +1218,22 @@ body[data-scene-effect="sleep"] .tank {
 
 .tank[data-effect="sleep"] .star {
   animation: twinkle 1600ms ease-in-out infinite;
+}
+
+.tank[data-effect="pet"] .play-fx {
+  opacity: 1;
+}
+
+.tank[data-effect="pet"] .play-heart--1 {
+  animation: heart-burst 1100ms ease-out 0ms forwards;
+}
+
+.tank[data-effect="pet"] .play-heart--2 {
+  animation: heart-burst 1100ms ease-out 120ms forwards;
+}
+
+.tank[data-effect="pet"] .play-heart--3 {
+  animation: heart-burst 1100ms ease-out 220ms forwards;
 }
 
 .tank[data-effect="feed"] .worm {
@@ -1308,6 +1385,22 @@ body[data-scene-effect="sleep"] .tank {
 
   50% {
     transform: translateX(-50%) translateY(4px);
+  }
+}
+
+@keyframes pet-bounce {
+
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  45% {
+    transform: translateX(-50%) translateY(-6px) rotate(-2deg);
+  }
+
+  70% {
+    transform: translateX(-50%) translateY(-1px) rotate(2deg);
   }
 }
 
@@ -1616,6 +1709,7 @@ body[data-scene-effect="sleep"] .tank {
   .app-card,
   .pet-panel,
   .tank,
+  .tank::before,
   body::before {
     transition: none;
   }
