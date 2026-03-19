@@ -37,6 +37,75 @@
       maxDelayMs: 14000,
     },
 
+    progression: {
+      baseXpForNextLevel: 18,
+      xpGrowthPerLevel: 6,
+      levelUpMessageMs: 5200,
+      actionXp: {
+        feed: 6,
+        pet: 0,
+        play: 9,
+        sleep: 7,
+        clean: 8,
+      },
+      unlocks: [
+        {
+          id: "pearl-bubbles",
+          level: 2,
+          title: "Pearl Bubbles",
+          description: "A second bubble stream drifts through the pond.",
+        },
+        {
+          id: "seashell-nook",
+          level: 3,
+          title: "Seashell Nook",
+          description: "A tiny shell settles into the sand.",
+        },
+        {
+          id: "bubble-bow",
+          level: 4,
+          title: "Bubble Bow",
+          description: "Tamalotl gets a tiny pastel bow.",
+        },
+        {
+          id: "dreamy-lines",
+          level: 5,
+          title: "Dreamy Lines",
+          description: "New extra cozy mood lines appear.",
+          moodMessages: {
+            happy: [
+              "Tamalotl is doing a teeny tiny proud wiggle.",
+              "This pond feels extra magical today.",
+            ],
+            hungry: [
+              "A dainty little snack would make this moment perfect.",
+              "Tamalotl is hoping for a deluxe worm appointment.",
+            ],
+            sleepy: [
+              "A velvet-soft nap sounds absolutely dreamy.",
+              "Sleepy little frills. Sleepy little soul.",
+            ],
+            dirty: [
+              "Could we make the pond all soft and sparkly again?",
+              "Tamalotl is dreaming of fresh, glowy water.",
+            ],
+          },
+        },
+        {
+          id: "starlight-sparkles",
+          level: 6,
+          title: "Starlight Sparkles",
+          description: "Soft sparkles start twinkling in the water.",
+        },
+        {
+          id: "heart-boops",
+          level: 7,
+          title: "Heart Boops",
+          description: "Petting Tamalotl now releases extra hearts.",
+        },
+      ],
+    },
+
     actionEffects: {
       feed: {
         hunger: 24,

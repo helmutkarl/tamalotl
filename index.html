@@ -32,6 +32,31 @@
             Blub blub... what a gentle day.
           </p>
 
+          <section class="progress-card" data-progress-card aria-label="Progress">
+            <div class="progress-card__top">
+              <div>
+                <p class="progress-card__eyebrow">Care progress</p>
+                <p class="level-pill" data-level-label>Level 1</p>
+              </div>
+              <p class="xp-caption" data-xp-caption>0 / 18 XP to Level 2</p>
+            </div>
+
+            <div
+              class="xp-meter"
+              role="progressbar"
+              aria-label="Experience"
+              aria-valuemin="0"
+              aria-valuemax="18"
+              aria-valuenow="0"
+              data-xp-meter
+            >
+              <span class="xp-meter__fill" data-xp-fill></span>
+            </div>
+
+            <p class="levelup-banner" data-levelup-message aria-live="polite" hidden></p>
+            <p class="next-unlock" data-next-unlock>Next unlock at Level 2: Pearl Bubbles</p>
+          </section>
+
           <div class="tank" data-tank>
             <div class="scene-fx">
               <div class="night-fx">
@@ -66,6 +91,8 @@
                 <span class="play-heart play-heart--1"></span>
                 <span class="play-heart play-heart--2"></span>
                 <span class="play-heart play-heart--3"></span>
+                <span class="bonus-heart bonus-heart--1"></span>
+                <span class="bonus-heart bonus-heart--2"></span>
                 <span class="play-ring play-ring--1"></span>
                 <span class="play-ring play-ring--2"></span>
               </div>
@@ -90,8 +117,13 @@
             <span class="tank-bubble tank-bubble--2"></span>
             <span class="tank-bubble tank-bubble--3"></span>
             <span class="tank-bubble tank-bubble--4"></span>
+            <span class="tank-bubble tank-bubble--bonus-left"></span>
+            <span class="tank-bubble tank-bubble--bonus-right"></span>
             <span class="seaweed seaweed--left"></span>
             <span class="seaweed seaweed--right"></span>
+            <span class="shell-deco" aria-hidden="true"></span>
+            <span class="ambient-sparkle ambient-sparkle--1" aria-hidden="true"></span>
+            <span class="ambient-sparkle ambient-sparkle--2" aria-hidden="true"></span>
 
             <div class="pet-stage">
               <div class="axolotl-shadow"></div>
@@ -118,6 +150,7 @@
                   <span></span>
                   <span></span>
                 </span>
+                <span class="axolotl__bow" aria-hidden="true"></span>
                 <span class="axolotl__eye axolotl__eye--left"></span>
                 <span class="axolotl__eye axolotl__eye--right"></span>
                 <span class="axolotl__blush axolotl__blush--left"></span>
@@ -253,6 +286,14 @@
               <span class="action-button__hint">fresh water</span>
             </span>
           </button>
+        </section>
+
+        <section class="unlock-panel" aria-labelledby="unlock-heading">
+          <div class="unlock-panel__top">
+            <h2 id="unlock-heading">Little Unlocks</h2>
+            <p class="unlock-panel__count" data-unlock-count>0/6</p>
+          </div>
+          <div class="unlock-list" data-unlock-list></div>
         </section>
 
         <footer class="app-footer">
